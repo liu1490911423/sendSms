@@ -75,7 +75,7 @@ class sendSms
       $data['options'] = [
           'query' => [
               'PhoneNumbers' => $info['phone'],
-              'SignName' => $info['template_code']?$info['template_code']:$this->config['sign_name'],
+              'SignName' => $info['sign_name']?$info['sign_name']:$this->config['sign_name'],
               'TemplateCode' => $info['template_code']?$info['template_code']:$this->config['template_code'],
           ],
       ];
