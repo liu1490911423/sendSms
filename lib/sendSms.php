@@ -80,7 +80,7 @@ class sendSms
               'TemplateCode' => $info['template_code']?$info['template_code']:$this->config['template_code'],
               'TemplateParam'=>json_decode($info['template_param'])?json_decode($info['template_param']):'',
               'SmsUpExtendCode'=>$info['sms_up_extend_code']?$info['sms_up_extend_code']:'',
-              'OutId'=>$info['out_id']?$info['out_id']:'',
+              'OutId'=>$info['out_id']?$info['out_id']:time().'_'.$info['phone'],
           ],
       ];
 
