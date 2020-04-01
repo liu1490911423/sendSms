@@ -1,0 +1,21 @@
+{
+    "name": "hong/sms",
+    "description": "aliyun send sms",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "liu",
+            "email": "15308989138@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "alibabacloud/sdk": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sms\\": "lib/"
+        }
+    }
+}
