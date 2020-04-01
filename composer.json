@@ -1,7 +1,6 @@
 {
     "name": "hong/sms",
     "description": "aliyun send sms",
-    "type": "project",
     "license": "MIT",
     "authors": [
         {
