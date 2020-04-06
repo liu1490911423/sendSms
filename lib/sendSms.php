@@ -69,7 +69,7 @@ class sendSms
      * @throws \AlibabaCloud\Client\Exception\ClientException
      * @throws \AlibabaCloud\Client\Exception\ServerException
      */
-    public function sendSms($info){
+    public function SendSms($info){
 
       $data['action'] = 'SendSms';
       $data['options'] = [
@@ -86,6 +86,101 @@ class sendSms
 
       $result = $this->callApi($data);
       return $result;
+
+    }
+
+    /**
+     * 批量发送短信
+     * @param $info
+     * @return mixed
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     * @throws \AlibabaCloud\Client\Exception\ServerException
+     */
+    public function SendBatchSms($info){
+
+        $data['action'] = 'SendBatchSms';
+        $data['options'] = [
+            'query' => [
+                'RegionId'=>$info['region_id']?$info['region_id']:'',
+                'PhoneNumberJson' => json_encode($info['phoneJson']),
+                'SignNameJson' => json_encode($info['signNameJson']),//JSON数组格式。
+                'TemplateCode' => $info['template_code']?$info['template_code']:$this->config['template_code']
+            ],
+        ];
+
+        $result = $this->callApi($data);
+        return $result;
+    }
+
+    /**
+     * 短信查询接口
+     * @param $info
+     * @return mixed
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     * @throws \AlibabaCloud\Client\Exception\ServerException
+     */
+    public function QuerySendDetails($info){
+
+        $data['action'] = 'QuerySendDetails';
+        $data['options'] = [
+            'query' => [
+                'RegionId'=>$info['region_id']?$info['region_id']:'',
+                'CurrentPage' => $info['page']?$info['page']:1,
+                'PageSize' => $info['size']?$info['size']:10,
+                'PhoneNumber' => $info['phone'],
+                'SendDate' => $info['time']? $info['time']:date("yyyyMMdd")
+            ],
+        ];
+
+        $result = $this->callApi($data);
+        return $result;
+    }
+
+    /**
+     * 添加签名
+     * @param $info
+     * @return mixed
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     * @throws \AlibabaCloud\Client\Exception\ServerException
+     */
+    public function AddSmsSign($info){
+
+        $data['action'] = 'AddSmsSign';
+        $data['options'] = [
+            'query' => [
+                'RegionId'=>$info['region_id']?$info['region_id']:'',
+                'SignName'=>$info['signName'],
+                'SignSource' => $info['SignSource']?$info['SignSource']:1,
+                'Remark' => $info['Remark']
+            ],
+        ];
+
+        $result = $this->callApi($data);
+        return $result;
+    }
+
+    /**
+     * 添加短信模板
+     * @param $info
+     * @return mixed
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     * @throws \AlibabaCloud\Client\Exception\ServerException
+     */
+    public function AddSmsTemplate($info){
+
+        $data['action'] = 'AddSmsTemplate';
+        $data['options'] = [
+            'query' => [
+                'RegionId'=>$info['region_id']?$info['region_id']:'',
+                'TemplateType'=>$info['TemplateType']?$info['TemplateType']:0,
+                'TemplateName' => $info['TemplateName'],
+                'TemplateContent' => $info['TemplateContent'],
+                'Remark' => $info['Remark']
+            ],
+        ];
+
+        $result = $this->callApi($data);
+        return $result;
 
     }
 
