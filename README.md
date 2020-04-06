@@ -1,13 +1,5 @@
 # sendSms
 aliyun send sms
-<?php
-
-/**
- * Created by PhpStorm.
- * User: lhx
- * Date: 2019/12/16
- * Time: 17:17
- */
 
 use Sms\sendSms;
 
