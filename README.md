@@ -1,6 +1,6 @@
 # sendSms
 
-安装 composer require hong/autograph @dev
+安装 composer require hong/sms @dev
 
 aliyun send sms
 
