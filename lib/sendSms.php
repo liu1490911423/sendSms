@@ -31,10 +31,11 @@ class sendSms
      */
     function __construct($config) {
 
-      AlibabaCloud::accessKeyClient($config['key'],$config['secret'])
-          ->regionId($config['region_id'])
-          ->asDefaultClient();
-      $this->config = $config;
+        AlibabaCloud::accessKeyClient($config['key'],$config['secret'])
+            ->regionId($config['region_id'])
+            ->asDefaultClient();
+        $this->config = $config;
+
 
     }
 
@@ -47,17 +48,16 @@ class sendSms
      */
     public function callApi($data){
 
-       $result = AlibabaCloud::rpc()
-           ->product($this->config['product'])
-           ->version($this->config['version'])
-           ->action($data['action'])
-           ->options($data['options'])
-           ->method('POST')
-           ->host($this->config['host'])
-           ->request();
+        $result = AlibabaCloud::rpc()
+            ->product($this->config['product'])
+            ->version($this->config['version'])
+            ->action($data['action'])
+            ->options($data['options'])
+            ->method('POST')
+            ->host($this->config['host'])
+            ->request();
 
-
-       return $result['Regions'];
+        return $result['Regions'];
 
     }
 
@@ -71,21 +71,21 @@ class sendSms
      */
     public function SendSms($info){
 
-      $data['action'] = 'SendSms';
-      $data['options'] = [
-          'query' => [
-              'RegionId'=>$info['region_id']?$info['region_id']:'',
-              'PhoneNumbers' => $info['phone'],
-              'SignName' => $info['sign_name']?$info['sign_name']:$this->config['sign_name'],
-              'TemplateCode' => $info['template_code']?$info['template_code']:$this->config['template_code'],
-              'TemplateParam'=>json_encode($info['template_param'])?json_encode($info['template_param']):'',
-              'SmsUpExtendCode'=>$info['sms_up_extend_code']?$info['sms_up_extend_code']:'',
-              'OutId'=>$info['out_id']?$info['out_id']:time().'_'.$info['phone'],
-          ],
-      ];
+        $data['action'] = 'SendSms';
+        $data['options'] = [
+            'query' => [
+                'RegionId'=>$info['region_id']?$info['region_id']:'',
+                'PhoneNumbers' => $info['phone'],
+                'SignName' => $info['sign_name']?$info['sign_name']:$this->config['sign_name'],
+                'TemplateCode' => $info['template_code']?$info['template_code']:$this->config['template_code'],
+                'TemplateParam'=>json_encode($info['template_param'])?json_encode($info['template_param']):'',
+                'SmsUpExtendCode'=>$info['sms_up_extend_code']?$info['sms_up_extend_code']:'',
+                'OutId'=>$info['out_id']?$info['out_id']:time().'_'.$info['phone'],
+            ],
+        ];
 
-      $result = $this->callApi($data);
-      return $result;
+        $result = $this->callApi($data);
+        return $result;
 
     }
 
@@ -193,13 +193,16 @@ class sendSms
      * @throws \AlibabaCloud\Client\Exception\ClientException
      * @throws \AlibabaCloud\Client\Exception\ServerException
      */
-    public function PushMessageToAndroid($info){
+    public function Push($info){
 
-        $data['action'] = 'PushMessageToAndroid';
+        $data['action'] = 'Push';
         $data['options'] = [
             'query' => [
                 'RegionId'=>$info['region_id']?$info['region_id']:'',
                 'AppKey'=>$info['app_key']?$info['app_key']:$this->config['app_key'],
+                'Action'=>'Push',
+                'DeviceType'=>$info['device'],
+                'PushType'=>$info['type'],
                 'Body' => $info['body'],
                 'Target' => $info['target']?$info['target']:'DEVICE',
                 'TargetValue' => $info['target_value'],
