@@ -1,4 +1,7 @@
 # sendSms
+
+安装 composer require hong/autograph @dev
+
 aliyun send sms
 
 use Sms\sendSms;
