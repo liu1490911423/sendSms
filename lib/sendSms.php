@@ -23,6 +23,12 @@ class sendSms
 
     private $config;
 
+    /**
+     * 配置初始化
+     * sendSms constructor.
+     * @param $config
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     */
     function __construct($config) {
 
       AlibabaCloud::accessKeyClient($config['key'],$config['secret'])
@@ -34,34 +40,28 @@ class sendSms
 
     /**
      * 调用API的公共接口
-     * @param string $type
      * @param $data
      * @return mixed
      * @throws \AlibabaCloud\Client\Exception\ClientException
      * @throws \AlibabaCloud\Client\Exception\ServerException
      */
-    public function callApi($type='',$data){
-       if($type == 'fast'){
-           $result = AlibabaCloud::ecs()
-               ->v20140526()
-               ->describeRegions()
-               ->withResourceType('type')
-               ->request();
-       }else{
-           $result = AlibabaCloud::rpc()
-               ->product('Dysmsapi')
-               ->version('2017-05-25')
-               ->action($data['action'])
-               ->options($data['options'])
-               ->method('POST')
-               ->host('dysmsapi.aliyuncs.com')
-               ->request();
-        }
+    public function callApi($data){
+
+       $result = AlibabaCloud::rpc()
+           ->product($this->config['product'])
+           ->version($this->config['version'])
+           ->action($data['action'])
+           ->options($data['options'])
+           ->method('POST')
+           ->host($this->config['host'])
+           ->request();
+
 
        return $result['Regions'];
 
     }
 
+    //<--短信-->
     /**
      * 发送短信
      * @param $info
@@ -184,5 +184,30 @@ class sendSms
 
     }
 
+    //<--APP 推送-->
 
+    /**
+     * android推送
+     * @param $info
+     * @return mixed
+     * @throws \AlibabaCloud\Client\Exception\ClientException
+     * @throws \AlibabaCloud\Client\Exception\ServerException
+     */
+    public function PushMessageToAndroid($info){
+
+        $data['action'] = 'PushMessageToAndroid';
+        $data['options'] = [
+            'query' => [
+                'RegionId'=>$info['region_id']?$info['region_id']:'',
+                'AppKey'=>$info['app_key']?$info['app_key']:$this->config['app_key'],
+                'Body' => $info['body'],
+                'Target' => $info['target']?$info['target']:'DEVICE',
+                'TargetValue' => $info['target_value'],
+                'Title' => $info['title'],
+            ],
+        ];
+
+        $result = $this->callApi($data);
+        return $result;
+    }
 }
